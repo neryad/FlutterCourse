@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-
-
 class SliderPage extends StatefulWidget {
- @override
-
+  @override
   _SliderPageState createState() => _SliderPageState();
 }
 
 class _SliderPageState extends State<SliderPage> {
   double _valorSlider = 100.0;
+  bool _bloquearChec = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +19,8 @@ class _SliderPageState extends State<SliderPage> {
         child: Column(
           children: <Widget>[
             _crearSlider(),
+            _crearcheckBox(),
+            _crearSwitch(),
             Expanded(child: _crearImagen())
           ],
         ),
@@ -28,8 +28,7 @@ class _SliderPageState extends State<SliderPage> {
     );
   }
 
-  Widget _crearSlider(){
-
+  Widget _crearSlider() {
     return Slider(
       activeColor: Colors.indigo,
       label: 'Tamaño de la imagen',
@@ -37,20 +36,54 @@ class _SliderPageState extends State<SliderPage> {
       value: _valorSlider,
       min: 10.0,
       max: 400.0,
-      onChanged: ( valor ){
-      setState(() {
-        _valorSlider = valor; 
-      });
+      onChanged: (_bloquearChec)
+          ? null
+          : (valor) {
+              setState(() {
+                _valorSlider = valor;
+              });
+            },
+    );
+  }
+
+  Widget _crearcheckBox() {
+    // return Checkbox(
+    //   value: _bloquearChec,
+    //   onChanged: (valor){
+    //     setState(() {
+    //      _bloquearChec = valor;
+    //     });
+    //   },
+    // );
+    return CheckboxListTile(
+      title: Text('Bloquear Slider'),
+      value: _bloquearChec,
+      onChanged: (valor) {
+        setState(() {
+          _bloquearChec = valor;
+        });
       },
     );
   }
 
-  Widget _crearImagen(){
+  Widget _crearSwitch(){
+     return SwitchListTile(
+      title: Text('Bloquear Slider'),
+      value: _bloquearChec,
+      onChanged: (valor) {
+        setState(() {
+          _bloquearChec = valor;
+        });
+      },
+    );
+  }
+
+  Widget _crearImagen() {
     return Image(
-      image: NetworkImage('http://pluspng.com/img-png/spiderman-logo-png-image-spider-man-png-clipart-png-spider-man-wiki-900.png'),
+      image: NetworkImage(
+          'http://pluspng.com/img-png/spiderman-logo-png-image-spider-man-png-clipart-png-spider-man-wiki-900.png'),
       width: _valorSlider,
       fit: BoxFit.contain,
     );
   }
 }
-
