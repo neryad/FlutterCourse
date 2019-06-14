@@ -9,7 +9,7 @@ class Peliculas{
     for(var item in jsonList){
 
       final pelicula = new Pelicula.fromJsonMap(item);
-      item.add(pelicula);
+      items.add(pelicula);
     }
   }
 }
@@ -47,7 +47,7 @@ class Pelicula {
     this.releaseDate,
   });
 
-  Pelicula.fromJsonMap(Map<String,dynamic> json) {
+  Pelicula.fromJsonMap(Map <String, dynamic> json) {
     voteCount = json['vote_count'];
     id =json['id'];
     video =json['video'];
@@ -63,6 +63,15 @@ class Pelicula {
     overview=json['overview'];
     releaseDate=json['release_date'];
   }
+
+getPosterImg() {
+  if( posterPath == null){
+    return 'https://semantic-ui.com/images/wireframe/white-image.png';
+  }else {
+  return 'https://image.tmdb.org/t/p/w500/$posterPath';
+  }
+}
+
 }
 
 
