@@ -18,18 +18,20 @@ class MovieHorizontal extends StatelessWidget {
       }
     });
     return Container(
-      height: _screenSize.height * 0.2,
-      child: PageView(
+      height: _screenSize.height * 0.25,
+      child: PageView.builder(
         pageSnapping: false,
         controller: _pageController,
-        children: _tarjetas(context),
+        // children: _tarjetas(context),
+        itemCount: peliculas.length,
+        itemBuilder:(context,i) {
+          return _tajerta(context, peliculas[i]);
+        } ,
       ),
     );
   }
-
-  List<Widget> _tarjetas(BuildContext context) {
-    return peliculas.map((pelicula) {
-      return Container(
+  Widget _tajerta (BuildContext context,Pelicula pelicula){
+      final tarjeta = Container(
         margin: EdgeInsets.only(right: 15.0),
         child: Column(
           children: <Widget>[
@@ -51,6 +53,40 @@ class MovieHorizontal extends StatelessWidget {
           ],
         ),
       );
-    }).toList();
+
+      return GestureDetector(
+        child: tarjeta,
+        onTap: (){
+          Navigator.pushNamed(context, 'detalle',arguments: pelicula);
+          print('Id pelicula ${pelicula.id}');
+        },
+      );
   }
+
+  // List<Widget> _tarjetas(BuildContext context) {
+  //   return peliculas.map((pelicula) {
+  //     return Container(
+  //       margin: EdgeInsets.only(right: 15.0),
+  //       child: Column(
+  //         children: <Widget>[
+  //           ClipRRect(
+  //             borderRadius: BorderRadius.circular(20.0),
+  //             child: FadeInImage(
+  //               image: NetworkImage(pelicula.getPosterImg()),
+  //               placeholder: AssetImage('assets/img/no-image.jpg'),
+  //               fit: BoxFit.cover,
+  //               height: 140.0,
+  //             ),
+  //           ),
+  //           SizedBox(height: 5.0),
+  //           Text(
+  //             pelicula.title,
+  //             overflow: TextOverflow.ellipsis,
+  //             style: Theme.of(context).textTheme.caption,
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }).toList();
+  // }
 }

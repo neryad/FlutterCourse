@@ -72,6 +72,15 @@ getPosterImg() {
   }
 }
 
+getBackgroundImg() {
+  if( posterPath == null){
+    return 'https://semantic-ui.com/images/wireframe/white-image.png';
+  }else {
+  return 'https://image.tmdb.org/t/p/w500/$backdropPath';
+  }
+}
+
+
 }
 
 
