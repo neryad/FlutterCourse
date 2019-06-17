@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:peliculas/src/models/actores_models.dart';
 import 'package:peliculas/src/models/pelicula_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,7 +11,7 @@ class PeliculasProvider {
   String _language = 'es-ES';
 
   int _popularesPAge = 0;
-  
+
   bool _cargando = false;
 
   List<Pelicula> _populares = new List();
@@ -21,7 +22,7 @@ class PeliculasProvider {
 
   Stream<List<Pelicula>> get popularesStream => _popularesStream.stream;
 
-  void disposeStreams(){
+  void disposeStreams() {
     _popularesStream?.close();
   }
 
@@ -45,18 +46,29 @@ class PeliculasProvider {
     if (_cargando) return [];
     _cargando = true;
     _popularesPAge++;
-  
-    final url = Uri.https(
-        _url, '3/movie/popular', {
-          'api_key': _apekey, 
-          'language': _language,
-          'page'    : _popularesPAge.toString()
-        
-        });
-    final resp =  await _procesarRepuesta(url);
+
+    final url = Uri.https(_url, '3/movie/popular', {
+      'api_key': _apekey,
+      'language': _language,
+      'page': _popularesPAge.toString()
+    });
+    final resp = await _procesarRepuesta(url);
     _populares.addAll(resp);
     popularesSink(_populares);
-_cargando = false;
+    _cargando = false;
     return resp;
+  }
+
+  Future<List<Actor>> getCast(String peliId) async {
+
+    final url = Uri.https(_url, '3/movie/$peliId/credits',
+        {'api_key': _apekey, 'language': _language});
+    final resp = await http.get(url);
+
+    final decodeData = json.decode(resp.body);
+
+    final cast = new Cast.fromJsonList(decodeData['cast']);
+
+    return cast.actores;
   }
 }
