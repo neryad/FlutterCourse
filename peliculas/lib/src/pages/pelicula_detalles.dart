@@ -145,7 +145,8 @@ class PeliculaDetalle extends StatelessWidget {
           Text(
             actor.name,
           overflow: TextOverflow.ellipsis,
-          )
+          ),
+          
         ],
       ) ,
     );
